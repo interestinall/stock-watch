@@ -152,15 +152,12 @@ import com.google.gwt.i18n.client.NumberFormat;
 
 
 
-
-
-
-
 		  private void refreshWatchList() {
 		    final double MAX_PRICE = 100.0; // $100.00
 		    final double MAX_PRICE_CHANGE = 0.02; // +/- 2%
 
-		        StockPrice[] prices = new StockPrice[stocks.size()];
+		    StockPrice[] prices = new StockPrice[stocks.size()];
+		    
 		    for (int i = 0; i < stocks.size(); i++) {
 		      double price = Random.nextDouble() * MAX_PRICE;
 		      double change = price * MAX_PRICE_CHANGE
@@ -191,25 +188,23 @@ import com.google.gwt.i18n.client.NumberFormat;
  *
      * @param price Stock data for a single row.
  */
-private void updateTable(StockPrice price) {
-  // Make sure the stock is still in the stock table.
-  if (!stocks.contains(price.getSymbol())) {
-    return;
-  }
+		private void updateTable(StockPrice price) {
+		  // Make sure the stock is still in the stock table.
+		  if (!stocks.contains(price.getSymbol())) {
+		    return;
+		  }
 
       int row = stocks.indexOf(price.getSymbol()) + 1;
 
       // Format the data in the Price and Change fields.
-  String priceText = NumberFormat.getFormat("#,##0.00").format(
-      price.getPrice());
-  NumberFormat changeFormat = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
-  String changeText = changeFormat.format(price.getChange());
-  String changePercentText = changeFormat.format(price.getChangePercent());
+	  String priceText = NumberFormat.getFormat("#,##0.00").format(price.getPrice());
+	  NumberFormat changeFormat = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
+	  String changeText = changeFormat.format(price.getChange());
+	  String changePercentText = changeFormat.format(price.getChangePercent());
 
       // Populate the Price and Change fields with new data.
-  stockTable.setText(row, 1, priceText);
-  stockTable.setText(row, 2, changeText + " (" + changePercentText
-      + "%)");
+	  stockTable.setText(row, 1, priceText);
+	  stockTable.setText(row, 2, changeText + " (" + changePercentText + "%)");
 }
 
 		
