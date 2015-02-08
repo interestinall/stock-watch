@@ -1,5 +1,7 @@
 package com.google.gwt.sample.stockwatcher.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -27,6 +29,7 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 		private TextBox newSymbolBox = new TextBox();
 		private Button addStockButton = new Button("Add");
 		private Label lastUpdatedLabel = new Label();
+		private ArrayList<String> stocks = new ArrayList<String>();
 		
 		/**
 		 **   ENTRY POINT
@@ -89,6 +92,8 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 	   */
 
 		private void addStock() {
+			
+			//gets the text from the box, makes it uppercase and takes away leading and trailing space.
 			 final String symbol = newSymbolBox.getText().toUpperCase().trim();
 			    newSymbolBox.setFocus(true);
 			    
@@ -102,8 +107,31 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 			    newSymbolBox.setText("");
 
 			    // TODO Don't add the stock if it's already in the table.
+			    
+			    if(stocks.contains(symbol)){
+			    	return;
+			    }
+			    
 			    // TODO Add the stock to the table
+			    
+			    int row = stockTable.getRowCount();
+			    stocks.add(symbol);
+			    stockTable.setText(row, 0, symbol);
+			    
+			    
 			    // TODO Add a button to remove this stock from the table.
+			    
+			    Button removeStockButton = new Button("x");
+			    removeStockButton.addClickHandler(new ClickHandler() {
+			      public void onClick(ClickEvent event) {
+			        int removedIndex = stocks.indexOf(symbol);
+			        stocks.remove(removedIndex);
+			        stockTable.removeRow(removedIndex + 1);
+			      }
+			    });
+			    
+			    stockTable.setWidget(row, 3, removeStockButton);
+			    
 			    // TODO Get the stock price.
 			
 		}
