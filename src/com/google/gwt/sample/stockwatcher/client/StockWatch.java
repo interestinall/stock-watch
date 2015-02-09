@@ -194,8 +194,7 @@ public class StockWatch implements EntryPoint {
 		NumberFormat changeFormat = NumberFormat
 				.getFormat("+#,##0.00;-#,##0.00");
 		String changeText = changeFormat.format(price.getChange());
-		String changePercentText = changeFormat
-				.format(price.getChangePercent());
+		String changePercentText = changeFormat.format(price.getChangePercent());
 
 		// Populate the Price and Change fields with new data.
 		stockTable.setText(row, 1, priceText);
