@@ -47,12 +47,16 @@ public class StockWatch implements EntryPoint {
 		stockTable.setText(0, 1, "Price");
 		stockTable.setText(0, 2, "Change");
 		stockTable.setText(0, 3, "remove");
-		
+		stockTable.setCellPadding(6);
+
 		stockTable.getRowFormatter().addStyleName(0, "watchListHeader");
-	    stockTable.addStyleName("watchList");
-	    stockTable.getCellFormatter().addStyleName(0, 1, "watchListNumericColumn");
-	    stockTable.getCellFormatter().addStyleName(0, 2, "watchListNumericColumn");
-	    stockTable.getCellFormatter().addStyleName(0, 3, "watchListRemoveColumn");
+		stockTable.addStyleName("watchList");
+		stockTable.getCellFormatter().addStyleName(0, 1,
+				"watchListNumericColumn");
+		stockTable.getCellFormatter().addStyleName(0, 2,
+				"watchListNumericColumn");
+		stockTable.getCellFormatter().addStyleName(0, 3,
+				"watchListRemoveColumn");
 
 		// TODO Assemble Add Stock panel.
 
@@ -133,13 +137,18 @@ public class StockWatch implements EntryPoint {
 		int row = stockTable.getRowCount();
 		stocks.add(symbol);
 		stockTable.setText(row, 0, symbol);
-		stockTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
-	    stockTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
-		stockTable.getCellFormatter().addStyleName(row, 3, "watchListRemoveColumn");
+		stockTable.setWidget(row, 2, new Label());
+		stockTable.getCellFormatter().addStyleName(row, 1,
+				"watchListNumericColumn");
+		stockTable.getCellFormatter().addStyleName(row, 2,
+				"watchListNumericColumn");
+		stockTable.getCellFormatter().addStyleName(row, 3,
+				"watchListRemoveColumn");
 
 		// TODO Add a button to remove this stock from the table.
 
 		Button removeStockButton = new Button("x");
+		removeStockButton.addStyleDependentName("remove");
 		removeStockButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				int removedIndex = stocks.indexOf(symbol);
@@ -179,7 +188,9 @@ public class StockWatch implements EntryPoint {
 		for (int i = 0; i < prices.length; i++) {
 			updateTable(prices[i]);
 			// Display timestamp showing last refresh.
-			lastUpdatedLabel.setText("Last update : " + DateTimeFormat.getMediumDateTimeFormat().format(new Date()));
+			lastUpdatedLabel.setText("Last update : "
+					+ DateTimeFormat.getMediumDateTimeFormat().format(
+							new Date()));
 		}
 
 	}
@@ -204,11 +215,23 @@ public class StockWatch implements EntryPoint {
 		NumberFormat changeFormat = NumberFormat
 				.getFormat("+#,##0.00;-#,##0.00");
 		String changeText = changeFormat.format(price.getChange());
-		String changePercentText = changeFormat.format(price.getChangePercent());
+		String changePercentText = changeFormat
+				.format(price.getChangePercent());
 
 		// Populate the Price and Change fields with new data.
 		stockTable.setText(row, 1, priceText);
-		stockTable.setText(row, 2, changeText + " (" + changePercentText + "%)");
+		Label changeWidget = (Label) stockTable.getWidget(row, 2);
+		changeWidget.setText(changeText + " (" + changePercentText + "%)");
+
+		// Change the color of text in the Change field based on its value.
+		String changeStyleName = "noChange";
+		if (price.getChangePercent() < -0.1f) {
+			changeStyleName = "negativeChange";
+		} else if (price.getChangePercent() > 0.1f) {
+			changeStyleName = "positiveChange";
+		}
+
+		changeWidget.setStyleName(changeStyleName);
 	}
 
 }
