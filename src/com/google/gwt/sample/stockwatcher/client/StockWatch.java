@@ -47,11 +47,18 @@ public class StockWatch implements EntryPoint {
 		stockTable.setText(0, 1, "Price");
 		stockTable.setText(0, 2, "Change");
 		stockTable.setText(0, 3, "remove");
+		
+		stockTable.getRowFormatter().addStyleName(0, "watchListHeader");
+	    stockTable.addStyleName("watchList");
+	    stockTable.getCellFormatter().addStyleName(0, 1, "watchListNumericColumn");
+	    stockTable.getCellFormatter().addStyleName(0, 2, "watchListNumericColumn");
+	    stockTable.getCellFormatter().addStyleName(0, 3, "watchListRemoveColumn");
 
 		// TODO Assemble Add Stock panel.
 
 		addPanel.add(newSymbolBox);
 		addPanel.add(addStockButton);
+		addPanel.addStyleName("addPanel");
 
 		// TODO Assemble Main panel.
 
@@ -126,6 +133,9 @@ public class StockWatch implements EntryPoint {
 		int row = stockTable.getRowCount();
 		stocks.add(symbol);
 		stockTable.setText(row, 0, symbol);
+		stockTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
+	    stockTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
+		stockTable.getCellFormatter().addStyleName(row, 3, "watchListRemoveColumn");
 
 		// TODO Add a button to remove this stock from the table.
 
